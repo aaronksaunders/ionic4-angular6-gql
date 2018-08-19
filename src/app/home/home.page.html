@@ -7,6 +7,24 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs">docs</a> will be your guide.</p>
+  <ion-card>
+    <ion-card-content>
+    <ion-item>
+      <ion-label>Content</ion-label>
+      <ion-input [(ngModel)]="input.content"></ion-input>
+    </ion-item>
+    <ion-button (click)="add()">ADD</ion-button>
+  </ion-card-content>
+  </ion-card>
+
+  <ion-list padding>
+    <ion-item *ngFor="let m of (messages | async)?.data.getAllMessages" routerLink="/detail/{{m.id}}">
+      <ion-icon name="document" slot="start"></ion-icon>
+      {{m | json}}
+    </ion-item>
+  </ion-list>
+
+  <div>
+    <ion-button ion-button (click)="get()">GET</ion-button>
+  </div>
 </ion-content>
