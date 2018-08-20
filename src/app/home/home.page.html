@@ -9,22 +9,26 @@
 <ion-content padding>
   <ion-card>
     <ion-card-content>
-    <ion-item>
-      <ion-label>Content:</ion-label>
-      <ion-input [(ngModel)]="input.content"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Author:</ion-label>
-      <ion-input [(ngModel)]="input.author"></ion-input>
-    </ion-item>
-    <ion-button (click)="add()">ADD</ion-button>
-  </ion-card-content>
+      <ion-item>
+        <ion-label>Content:</ion-label>
+        <ion-input [(ngModel)]="input.content"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Author:</ion-label>
+        <ion-input [(ngModel)]="input.author"></ion-input>
+      </ion-item>
+      <ion-button (click)="add()">ADD</ion-button>
+    </ion-card-content>
   </ion-card>
 
   <ion-list padding>
-    <ion-item *ngFor="let m of (messages | async)?.data.getAllMessages" routerLink="/detail/{{m.id}}">
-      <ion-icon name="document" slot="start"></ion-icon>
-      {{m | json}}
+    <ion-item *ngFor="let m of (messages | async)?.data.getAllMessages">
+      <div routerLink="/detail/{{m.id}}">
+        <ion-icon name="document" slot="start"></ion-icon>
+        {{m | json}}
+      </div>
+      <ion-button ion-button size="small" color="danger" (click)="deleteMessage(m.id)">DELETE</ion-button>
+
     </ion-item>
   </ion-list>
 

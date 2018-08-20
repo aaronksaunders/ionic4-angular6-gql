@@ -27,6 +27,15 @@ let ADD_MESSAGE = gql`
       id
       content
       author
+      created
+    }
+  }
+`;
+
+const DELETE_MESSAGE = gql`
+  mutation deleteMessage($id: ID!) {
+    deleteMessage(id: $id) {
+      id
     }
   }
 `;
@@ -51,12 +60,57 @@ export class HomePage implements OnInit {
     }).valueChanges;
   }
 
+  deleteMessage(_id) {
+    console.log(_id);
+
+    this.apollo
+      .mutate({
+        mutation: DELETE_MESSAGE,
+        variables: { id: _id },
+
+        update: (proxy, { data: { deleteMessage } }) => {
+          debugger;
+          // Read the data from our cache for this query.
+          let data: any = proxy.readQuery({ query: GET_ALL_MESSAGES });
+
+          let updatedData = data.getAllMessages.filter(u => {
+            return u.id !== deleteMessage.id;
+          });
+
+          // Write our data back to the cache.
+          proxy.writeQuery({
+            query: GET_ALL_MESSAGES,
+            data: { getAllMessages: updatedData }
+          });
+        }
+      })
+      .subscribe(
+        ({ data }) => {
+          console.log("got data: deleted user", data);
+        },
+        error => {
+          console.log("there was an error sending the query", error);
+        }
+      );
+  }
+
   add() {
     this.apollo
       .mutate({
         mutation: ADD_MESSAGE,
         variables: {
           msgInput: { ...this.input, created: new Date() }
+        },
+        update: (proxy, { data: { createMessage } }) => {
+          debugger;
+          // Read the data from our cache for this query.
+          let data: any = proxy.readQuery({ query: GET_ALL_MESSAGES });
+
+          // Add our message from the mutation to the end.
+          data.getAllMessages.push(createMessage);
+
+          // Write our data back to the cache.
+          proxy.writeQuery({ query: GET_ALL_MESSAGES, data });
         }
       })
       .subscribe(
