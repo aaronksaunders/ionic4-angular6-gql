@@ -16,10 +16,10 @@ let GET_ALL_MESSAGES = gql`
       id
       content
       author
+      created
     }
   }
 `;
-
 
 let ADD_MESSAGE = gql`
   mutation add($msgInput: MessageInput!) {
@@ -43,14 +43,7 @@ export class HomePage implements OnInit {
     author: "Aaron Saunders"
   };
 
-  constructor(public apollo: Apollo, httpLink: HttpLink) {
-    apollo.create({
-      // By default, this client will send queries to the
-      // `/graphql` endpoint on the same host
-      link: httpLink.create({ uri: "https://r9x8jkr0qn.lp.gql.zone/graphql" }),
-      cache: new InMemoryCache()
-    });
-  }
+  constructor(public apollo: Apollo, httpLink: HttpLink) {}
 
   ngOnInit() {
     this.messages = this.apollo.watchQuery({
@@ -63,7 +56,7 @@ export class HomePage implements OnInit {
       .mutate({
         mutation: ADD_MESSAGE,
         variables: {
-          msgInput: this.input
+          msgInput: { ...this.input, created: new Date() }
         }
       })
       .subscribe(
@@ -76,5 +69,4 @@ export class HomePage implements OnInit {
         }
       );
   }
-
 }

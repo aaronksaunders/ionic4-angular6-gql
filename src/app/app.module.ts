@@ -11,8 +11,9 @@ import { AppRoutingModule } from "./app-routing.module";
 
 // GRAPH QL
 import { HttpClientModule } from "@angular/common/http";
-import { ApolloModule } from "apollo-angular";
-import { HttpLinkModule } from "apollo-angular-link-http";
+import { ApolloModule, Apollo } from "apollo-angular";
+import { HttpLinkModule, HttpLink } from "apollo-angular-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -31,4 +32,15 @@ import { HttpLinkModule } from "apollo-angular-link-http";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+
+  constructor(public apollo: Apollo, httpLink: HttpLink) {
+    apollo.create({
+      // By default, this client will send queries to the
+      // `/graphql` endpoint on the same host
+      link: httpLink.create({ uri: "https://r9x8jkr0qn.lp.gql.zone/graphql" }),
+      cache: new InMemoryCache()
+    });
+  }
+
+}

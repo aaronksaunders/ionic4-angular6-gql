@@ -10,8 +10,12 @@
   <ion-card>
     <ion-card-content>
     <ion-item>
-      <ion-label>Content</ion-label>
+      <ion-label>Content:</ion-label>
       <ion-input [(ngModel)]="input.content"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Author:</ion-label>
+      <ion-input [(ngModel)]="input.author"></ion-input>
     </ion-item>
     <ion-button (click)="add()">ADD</ion-button>
   </ion-card-content>

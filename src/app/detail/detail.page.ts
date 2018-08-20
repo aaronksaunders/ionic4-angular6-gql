@@ -14,6 +14,7 @@ let GET_MESSAGE_BY_ID = gql`
       id
       content
       author
+      created
     }
   }
 `;
@@ -25,6 +26,7 @@ let GET_MESSAGE_BY_ID = gql`
 })
 export class DetailPage implements OnInit {
   currentId;
+  currentItem
 
   constructor(
     public route: ActivatedRoute,
@@ -35,26 +37,20 @@ export class DetailPage implements OnInit {
     let c = 
 
     this.currentId = this.route.snapshot.paramMap.get("id") + "";
-    this.getMessage(this.currentId);
+
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currentItem = this.getMessage(this.currentId);
+  }
 
   getMessage(msgId) {
-    this.apollo
-      .query({
+    return this.apollo
+      .watchQuery({
         query: GET_MESSAGE_BY_ID,
         variables: {
           msgId
         }
-      })
-      .subscribe(
-        ({ data }) => {
-          console.log("got data", data);
-        },
-        error => {
-          console.log("there was an error sending the query", error);
-        }
-      );
+      }).valueChanges
   }
 }

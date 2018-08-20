@@ -8,5 +8,6 @@
 </ion-header>
 
 <ion-content padding>
-{{currentId}}
+  <ion-item>{{currentId}}</ion-item>
+  <ion-item>{{(currentItem | async)?.data.getMessage | json}}</ion-item>
 </ion-content>
