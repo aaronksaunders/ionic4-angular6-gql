@@ -21,20 +21,20 @@ const typeDefs = `
   type Query {
     hello: String
     getMessage(id: ID!): Message
-		getAllMessages : [Message]
+    getAllMessages : [Message]
   }
 
   input MessageInput {
     content: String
     author: String
-		created : String
+    created : String
   }
 
   type Message {
     id: ID!
     content: String
     author: String
-		created : String
+    created : String
   }
 
   type Mutation {
@@ -62,11 +62,11 @@ const resolvers = {
   // QUERIES - Get your data state from your apollo server.
   Query: {
     getMessage:  (root, {id}, context) => {
-    	if (!data.get(id)) {
-      	throw new Error('no message exists with id ' + id);
-    	}
-    	return {id, ...data.get(id)};
-  	},
+      if (!data.get(id)) {
+        throw new Error('no message exists with id ' + id);
+      }
+      return {id, ...data.get(id)};
+    },
 
     getAllMessages:  (root, args, context) => {
       let r = []
@@ -74,29 +74,29 @@ const resolvers = {
       data.forEach ((v,k) => {
         r.push({id:k,...v})
       })
-    	return r;
-  	},
+      return r;
+    },
   },
-  
-  // MUTATIONS - Queries that change your data state on your apollo server.
+
+    // MUTATIONS - Queries that change your data state on your apollo server.
   Mutation : {
     deleteMessage:  (root, {id}, context) => {
-    	if (!data.get(id)) {
-      	throw new Error('no message exists with id ' + id);
-    	}
+      if (!data.get(id)) {
+        throw new Error('no message exists with id ' + id);
+      }
       data.delete(id)
-    	return {id };
-  	},    
-  	createMessage: (root, {input}, context) => {
-    	// Create a random id for our "database".
-    	var id = new Date().getTime() + "";
-      
+      return {id };
+    },    
+    createMessage: (root, {input}, context) => {
+      // Create a random id for our "database".
+      var id = new Date().getTime() + "";
+
       data.set(id,{id, ...input, created : new Date() })
-      
+
       console.log(input)
-    
-    	return  {...data.get(id)};
-  	},
+
+      return  {...data.get(id)};
+    },
   }  
 };
 ```
