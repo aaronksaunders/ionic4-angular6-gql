@@ -1,23 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import gql from "graphql-tag";
-import { Apollo } from "apollo-angular";
-import { HttpLink } from "apollo-angular-link-http";
-import { InMemoryCache } from "../../../node_modules/apollo-cache-inmemory";
-
-//
-// set up query to specific message by id
-//
-let GET_MESSAGE_BY_ID = gql`
-  query getMessage($msgId: ID!) {
-    getMessage(id: $msgId) {
-      id
-      content
-      author
-      created
-    }
-  }
-`;
+import { GetMessageGQL } from "../qraphql/MessagesQuery";
 
 @Component({
   selector: "app-detail",
@@ -26,18 +9,14 @@ let GET_MESSAGE_BY_ID = gql`
 })
 export class DetailPage implements OnInit {
   currentId;
-  currentItem
+  currentItem;
 
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    public apollo: Apollo,
-    httpLink: HttpLink
+    public getMessageQuery: GetMessageGQL
   ) {
-    let c = 
-
     this.currentId = this.route.snapshot.paramMap.get("id") + "";
-
   }
 
   ngOnInit() {
@@ -45,12 +24,6 @@ export class DetailPage implements OnInit {
   }
 
   getMessage(msgId) {
-    return this.apollo
-      .watchQuery({
-        query: GET_MESSAGE_BY_ID,
-        variables: {
-          msgId
-        }
-      }).valueChanges
+    return this.getMessageQuery.watch({ id: msgId }).valueChanges;
   }
 }

@@ -22,7 +22,7 @@
   </ion-card>
 
   <ion-list padding>
-    <ion-item *ngFor="let m of (messages | async)?.data.getAllMessages">
+    <ion-item *ngFor="let m of (messages | async)">
       <div routerLink="/detail/{{m.id}}">
         <ion-icon name="document" slot="start"></ion-icon>
         {{m | json}}
