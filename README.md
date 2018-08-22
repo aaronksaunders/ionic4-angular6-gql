@@ -7,6 +7,9 @@ updated ionic graphql project - still work in progress, this will be based off o
 
 ## Using Apollo Client's New Query & Mutation Classes
 
+> See the Official Documentation [Query, Mutation, Subscription services
+Additional API to use GraphQL in Angular](https://www.apollographql.com/docs/angular/basics/services.html)
+
 This is a query class to query all of the messages, its good because we have the power of typescript that allows for type checking when structuring the query; the should look something like this `MessagesQuery.ts`
 
 ```javascript
