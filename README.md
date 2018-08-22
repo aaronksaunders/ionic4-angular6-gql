@@ -2,7 +2,95 @@
 updated ionic graphql project - still work in progress, this will be based off of this older Ionic GraphQL project [ionic2-graphql-apollo-client](https://github.com/aaronksaunders/ionic2-graphql-apollo-client)
 
 
-## Using the latest version of ionic framework
+## Using the latest version of Ionic framework
+
+
+## Using Apollo Client's New Query & Mutation Classes
+
+This is a query class to query all of the messages, its good because we have the power of typescript that allows for type checking when structuring the query; the should look something like this `MessagesQuery.ts`
+
+```javascript
+import { Injectable } from "@angular/core";
+import { Query, Mutation } from "apollo-angular";
+import gql from "graphql-tag";
+
+@Injectable({
+  providedIn: "root"
+})
+export class AllMessagesGQL extends Query<AllMessagesQuery, {}> {
+  document = gql`
+    query getAllMessages {
+      getAllMessages {
+        id
+        content
+        author
+        created
+      }
+    }
+  `;
+}
+```
+The `document` variable holds the specific query that you have associated with the Query Object. We can specify what the query results should look like by specifying a type for the results. In this example it is represented by the type `AllMessagesQuery` which holds an array of `Message`
+
+```javascript
+export type AllMessagesQuery = {
+  messages: Message[];
+};
+
+export type Message = {
+  id: string;
+  content: string;
+  author: string;
+  created: string;
+};
+```
+Next we need to actually use the query we have just created; Import the specific files into `home.page.ts`
+```javascript
+import { AllMessagesGQL } from "../qraphql/MessagesQuery";
+```
+
+Then to use the Query Object, we do the following... set it up in the constructor of the `home.page.ts` file using angular dependency injection
+
+```javascript
+constructor( public msgQuery: AllMessagesGQL ) {}
+```
+
+Next we use the object to make the call to the query inside the `home.page.ts` file
+
+```javascript
+ngOnInit() {
+  this.messages = this.msgQuery
+    .watch()
+    .valueChanges.pipe(pluck("data", "getAllMessages"));
+}
+```
+Since the result of the query from the graphql server looks like this...
+
+```json
+{
+  "data": {
+    "getAllMessages": [
+      {
+        "id": "10",
+        "content": "default message here",
+        "created": "Wed Aug 22 2018 01:51:43 GMT+0000 (UTC)",
+        "author": "Aaron Saunders"
+      }
+    ]
+  }
+}
+```
+
+In order to get the specific array of messages to display we can use the `rxjs` `pluck` operator to get the data to render in the `home.page.html` file
+
+```html
+<ion-list padding>
+  <ion-item *ngFor="let m of (messages | async)">
+    {{m | json}}
+  </ion-item>
+</ion-list>
+```
+
 
 ## Apollo LaunchPad
 
