@@ -24,6 +24,7 @@ export class AllMessagesGQL extends Query<AllMessagesQuery, {}> {
         content
         author
         created
+        updated
       }
     }
   `;
@@ -48,6 +49,7 @@ export class GetMessageGQL extends Query<GetMessageQuery, GetMessageVariables> {
         content
         author
         created
+        updated
       }
     }
   `;
@@ -77,7 +79,7 @@ export class DeleteMessageGQL extends Mutation<
   `;
 }
 
-export type AddMessagetMutation = {
+export type AddMessageMutation = {
   newMessage: Message;
 };
 
@@ -93,7 +95,7 @@ export type AddMessageVariables = {
   providedIn: "root"
 })
 export class AddMessageGQL extends Mutation<
-  AddMessagetMutation,
+  AddMessageMutation,
   AddMessageVariables
 > {
   document = gql`
@@ -103,6 +105,38 @@ export class AddMessageGQL extends Mutation<
         content
         author
         created
+        updated
+      }
+    }
+  `;
+}
+
+export type UpdateMessageMutation = {
+  updatedMessage: Message;
+};
+
+export type UpdateMessageVariables = {
+  id: string;
+  msgInput: {
+    content: string;
+    author: string;
+  };
+};
+@Injectable({
+  providedIn: "root"
+})
+export class UpdateMessageGQL extends Mutation<
+  UpdateMessageMutation,
+  UpdateMessageVariables
+> {
+  document = gql`
+    mutation update($id: ID!, $msgInput: MessageInput!) {
+      updateMessage(id: $id, input: $msgInput) {
+        id
+        content
+        author
+        created
+        updated
       }
     }
   `;

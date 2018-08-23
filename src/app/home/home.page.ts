@@ -1,15 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 
-import gql from "graphql-tag";
-import { Apollo } from "apollo-angular";
-import { HttpLink } from "apollo-angular-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
 import {
   AllMessagesGQL,
   DeleteMessageGQL,
-  AddMessageGQL,
-  GetMessageQuery,
-  GetMessageGQL
+  AddMessageGQL
 } from "../qraphql/MessagesQuery";
 
 import { pluck } from "rxjs/operators";
@@ -26,7 +20,6 @@ import { pluck } from "rxjs/operators";
 })
 export class HomePage implements OnInit {
   messages;
-  aMessage;
 
   input: any = {
     content: "test",
