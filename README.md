@@ -188,6 +188,19 @@ const resolvers = {
 
       return  {...data.get(id)};
     },
+  	updateMessage: (root, {id,input}, context) => {
+      
+      let oldMsg = data.get(id)
+
+      data.set(id,{
+        id, 
+        ...oldMsg, 
+        ...input, 
+        updated : new Date() 
+      })
+
+      return  {...data.get(id)};
+  	},    
   }  
 };
 ```
