@@ -10,6 +10,7 @@ updated ionic graphql project - still work in progress, this will be based off o
 > See the Official Documentation [Query, Mutation, Subscription services
 Additional API to use GraphQL in Angular](https://www.apollographql.com/docs/angular/basics/services.html)
 
+### Get All Messages
 This is a query class to query all of the messages, its good because we have the power of typescript that allows for type checking when structuring the query; the should look something like this `MessagesQuery.ts`
 
 ```javascript
@@ -94,8 +95,17 @@ In order to get the specific array of messages to display we can use the `rxjs` 
 </ion-list>
 ```
 
+### Get Specific Message by Id
+> Implemented, needs to be documented
+
+### Update Message
+> Implemented, needs to be documented
+
+### Delete Message
+> Implemented, needs to be documented
 
 ## Apollo LaunchPad
+> Implemented, needs to be documented
 
 The server for this project is located here
 
